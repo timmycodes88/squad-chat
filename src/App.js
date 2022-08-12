@@ -3,9 +3,11 @@ import tw from 'twin.macro'
 function App() {
   return (
     <div className="App">
-      <h1 className="text-xl text-center">Hello World</h1>
+      <H1>Hello World</H1>
     </div>
   );
 }
+
+const H1 = tw.h1`text-xl text-center`;
 
 export default App;
