@@ -1,31 +1,56 @@
-import tw from 'twin.macro'
-import firebase from 'firebase/compat/app'
-import 'firebase/compat/auth'
-
+import tw, { styled } from "twin.macro";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import bgImage from "./Images/sign-in-bg.png";
+import { useState } from "react";
 
 export default function SignIn() {
+  function signInWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider);
+  }
 
-    function signInWithGoogle() {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider);
+  function signInOrCreate() {
+    if (signIn) {
+      // Sign In with email firebase
+    } else {
+      // Create account with Email
     }
+  }
 
-    return(
+  const [signIn, setSignIn] = useState(true);
+
+  return (
     <FullBackground>
       <Modal>
         <Title>Squad Chat</Title>
         <form>
-          <Input type="email" placeholder='Email' />
-          <Input type="password" placeholder='Password' />
+          <Input type="email" placeholder="Email" />
+          <Input type="password" placeholder="Password" />
         </form>
-        <GoogleSignIn onClick={signInWithGoogle}>Sign in with Google</GoogleSignIn>
+        <SignInWithEmail>
+          {" "}
+          {signIn ? "Sign In with Email" : "Create Account"}
+        </SignInWithEmail>
+        <GoogleSignIn onClick={signInWithGoogle}>
+          Sign in with Google
+        </GoogleSignIn>
+        <CreateAcct onClick={() => setSignIn(!signIn)}>
+          {" "}
+          {signIn ? "Create Account" : "Sign In with Email"}{" "}
+        </CreateAcct>
       </Modal>
     </FullBackground>
-    )
+  );
 }
 
-const FullBackground = tw.div`absolute w-screen h-screen bg-gray-100`
-const Modal = tw.div`m-auto mt-10 bg-white border-2 border-blue-600 rounded-2xl w-[95%] sm:w-[500px] h-[65vh] shadow`
-const Title = tw.h1`text-center text-5xl my-8 text-blue-600`
-const Input = tw.input`block m-auto rounded-md border border-blue-600 mb-8 p-2`;
-const GoogleSignIn = tw.button`block m-auto rounded-md p-4 bg-blue-600 text-white`;
+const FullBackground = styled.div`
+  ${tw`absolute w-screen h-screen bg-gray-100`}
+  background-image: url('${bgImage}');
+`;
+const Modal = tw.div` relative m-auto mt-10 bg-white border-2 border-blue-600 rounded-2xl w-[95%] sm:w-[500px] h-[80vh] shadow`;
+const Title = tw.h1`text-center text-5xl my-8 text-blue-600`;
+const Input = tw.input`w-[75%] block m-auto rounded-md border border-blue-600 mb-8 p-2 text-center`;
+const GoogleSignIn = tw.button`block m-auto rounded-md p-4 bg-blue-600 text-white w-[200px]`;
+const CreateAcct = tw.button`text-blue-600 mx-auto mt-2 mb-auto block`;
+const SignInWithEmail = tw.button`block m-auto rounded-md p-4 bg-green-500 text-white my-4 w-[200px]`;
