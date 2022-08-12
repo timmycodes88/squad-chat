@@ -9,11 +9,19 @@ export default function MainApp({user}) {
 
     return(
         <>
-            <h2>Hi {user.displayName}</h2>
-            <button onClick={() => console.log('User: ', user)}>Click Me!</button>
+            <PersonBox>
+                <StyledImg src={user.photoURL} />
+                <DisplayName>{user.displayName}</DisplayName>
+            </PersonBox>
+            
+
             <SignOutButton onClick={signOut}>Sign Out</SignOutButton>
         </>
     )
 }
 
-const SignOutButton = tw.button``;
+
+const PersonBox = tw.div`m-auto flex items-center mt-4 ml-4`
+const StyledImg = tw.img`w-16 h-16 rounded-full mr-4`
+const DisplayName= tw.h2`text-lg`
+const SignOutButton = tw.button`absolute top-4 right-4 bg-green-600 text-white p-4 rounded-md`;
