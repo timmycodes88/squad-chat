@@ -1,13 +1,16 @@
-import tw from 'twin.macro'
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from './FirebaseConfig'
+import MainApp from './MainApp';
+import SignIn from './SignIn';
 
-function App() {
+
+
+export default function App() {
+  const [user] = useAuthState(auth);
+
   return (
-    <div className="App">
-      <H1>Hello World</H1>
-    </div>
+    <>
+      {user ? <MainApp user={user} /> : <SignIn />}
+    </>
   );
 }
-
-const H1 = tw.h1`text-xl text-center`;
-
-export default App;
