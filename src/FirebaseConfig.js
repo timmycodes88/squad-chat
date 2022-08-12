@@ -1,15 +1,17 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
+
+
 const firebaseConfig = {
-    apiKey: "AIzaSyBeLRcj6dm6-KlldP85kOrmNI1HqXUgqrI",
-    authDomain: "squad-chat-dae54.firebaseapp.com",
-    projectId: "squad-chat-dae54",
-    storageBucket: "squad-chat-dae54.appspot.com",
-    messagingSenderId: "40910615260",
-    appId: "1:40910615260:web:8cc41969096df2401efa19",
-    measurementId: "G-NJ37WT4JYR"
-  }
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    projectId: process.env.PROJECT_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGING_SENDER_ID,
+    appId: process.env.APP_ID,
+    measurementId: process.env.MEASUREMENT_ID
+}
   
 export const app = firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
