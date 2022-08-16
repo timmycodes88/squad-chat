@@ -18,7 +18,7 @@ export default function SignIn() {
           <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
           <Input type="password" value={pass} onChange={(e) => setPass(e.target.value)} placeholder="Password" />
         </form>
-        <SignInWithEmail onClick={signInOrCreate(signIn, email, pass)}>
+        <SignInWithEmail onClick={() => signInOrCreate(signIn, email, pass)}>
           {" "}
           {signIn ? "Sign In with Email" : "Create Account"}
         </SignInWithEmail>
