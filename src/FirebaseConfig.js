@@ -1,5 +1,5 @@
 import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
+import { getAuth, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBeLRcj6dm6-KlldP85kOrmNI1HqXUgqrI",
@@ -12,4 +12,21 @@ const firebaseConfig = {
 }
   
 export const app = firebase.initializeApp(firebaseConfig);
-export const auth = firebase.auth();
+export const auth = getAuth();
+
+export function signInWithGoogle() {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider);
+}
+
+export function signInOrCreate(signIn, email, password) {
+    if (signIn) {
+        signInWithEmailAndPassword (auth, email, password)
+    } else {
+        createUserWithEmailAndPassword(auth, email, password)
+    }
+}
+
+export function signOut() {
+    auth.signOut();
+}

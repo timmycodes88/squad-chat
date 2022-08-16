@@ -1,11 +1,7 @@
 import tw from 'twin.macro'
-import { auth } from './FirebaseConfig'
+import { signOut } from './FirebaseConfig'
 
 export default function MainApp({user}) {
-
-    function signOut() {
-        auth.signOut();
-    }
 
     return(
         <>
