@@ -5,6 +5,7 @@ import bgImage from "./Images/sign-in-bg.png";
 import { useState } from "react";
 
 export default function SignIn() {
+  
   function signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider);
@@ -19,6 +20,7 @@ export default function SignIn() {
   }
 
   const [signIn, setSignIn] = useState(true);
+
 
   return (
     <FullBackground>
