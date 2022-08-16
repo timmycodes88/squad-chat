@@ -1,5 +1,14 @@
 import firebase from 'firebase/compat/app';
 import { getAuth, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider } from "firebase/auth";
+import { 
+getFirestore, 
+collection, 
+addDoc, 
+Timestamp, 
+query, 
+orderBy, 
+onSnapshot 
+} from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBeLRcj6dm6-KlldP85kOrmNI1HqXUgqrI",
@@ -11,8 +20,9 @@ const firebaseConfig = {
     measurementId: "G-NJ37WT4JYR"
 }
   
-export const app = firebase.initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 export const auth = getAuth();
+const db = getFirestore(app);
 
 export function signInWithGoogle() {
     const provider = new GoogleAuthProvider();
@@ -29,4 +39,28 @@ export function signInOrCreate(signIn, email, password) {
 
 export function signOut() {
     auth.signOut();
+}
+
+export async function sendDoc(text) {
+    try {
+        await addDoc(collection(db, 'messages'), {
+        message: text,
+        username: "Tim Van",
+        createdAt: Timestamp.now()
+        })
+    } catch (err) {
+        alert(err)
+    }
+}
+
+export function getMessages(setMessages) {
+    const msgsRef = collection(db, 'messages')
+    const order = orderBy('createdAt')
+    const q = query(msgsRef, order)
+    onSnapshot(q, (snap) => {
+        setMessages(snap.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data()
+        })))
+    })
 }

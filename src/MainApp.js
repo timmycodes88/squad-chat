@@ -1,13 +1,26 @@
 import tw from 'twin.macro'
-import { signOut } from './FirebaseConfig'
+import { useState, useEffect } from 'react';
+import { signOut, sendDoc, getMessages } from './FirebaseConfig'
+import defaultUser from './Images/default-user.png'
 
 export default function MainApp({user}) {
+
+    const [messages, setMessages] = useState([]);
+    const [text, setText] = useState('');
+
+    let photoURL;
+    if (user.photoURL) photoURL = user.photoURL;
+    else photoURL = defaultUser;
+
+    useEffect(() => {
+        getMessages(setMessages);
+    }, [])
 
     return(
         <>
             <Header>
                 <PersonBox>
-                    <StyledImg src={user.photoURL} />
+                    <StyledImg src={photoURL} />
                     <DisplayName>{user.displayName}</DisplayName>
                 </PersonBox>
                 
@@ -15,6 +28,13 @@ export default function MainApp({user}) {
 
                 <SignOutButton onClick={signOut}>Sign Out</SignOutButton>
             </Header>
+            <input placeholder='Message...' value={text} onChange={(e) => setText(e.target.value)} />
+            <button onClick={() => sendDoc(text)}>Send Message</button>
+            {
+                messages.map((msg) => (
+                    <h2 key={msg.id}>{msg.data.message}</h2>
+                ))
+            }
         </>
     )
 }
