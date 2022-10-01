@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import tw from 'twin.macro'
-import { signOut } from './FirebaseConfig'
+import { signOut, createUser } from './FirebaseConfig'
 import GlobalChat from './GlobalChat/GlobalChat';
 import defaultUser from './Images/default-user.png'
 
 export default function MainApp({user}) {
 
     useEffect(() => {
-        
+        createUser(user.uid)
     }, []);
 
     let photoURL;

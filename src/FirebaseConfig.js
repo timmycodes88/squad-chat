@@ -66,7 +66,6 @@ export function getMessages(setMessages) {
     const msgsRef = collection(db, 'messages')
     const order = orderBy('createdAt')
     const q = query(msgsRef, order)
-    console.log("🚀 ~ file: FirebaseConfig.js ~ line 70 ~ getMessages ~ q", q)
     onSnapshot(q, (snap) => {
         setMessages(snap.docs.map((doc) => ({
             id: doc.id,
@@ -78,13 +77,11 @@ export function getMessages(setMessages) {
 export async function createUser(uid) {
     const userRef = doc(db, "users", uid);
     const userDoc = await getDoc(userRef);
-    if (userDoc) return;
-
-    const query = collection(db, "users");
-
-
+    if (userDoc.exists()) return
+    const randomNumber = Math.floor(100000 + Math.random() * 900000);
+    const newUsername = "New User " + randomNumber;
     const newUserDoc = doc(db, "users", uid);
     await setDoc(newUserDoc, {
-        username: "New User "
+        username: newUsername
     })
 }
