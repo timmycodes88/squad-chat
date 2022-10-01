@@ -7,7 +7,10 @@ addDoc,
 Timestamp, 
 query, 
 orderBy, 
-onSnapshot 
+onSnapshot,
+doc,
+getDoc,
+setDoc
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -24,6 +27,8 @@ const app = firebase.initializeApp(firebaseConfig);
 export const auth = getAuth();
 const db = getFirestore(app);
 
+
+//Auth
 export function signInWithGoogle() {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider);
@@ -41,12 +46,15 @@ export function signOut() {
     auth.signOut();
 }
 
-export async function sendDoc(text, username) {
+
+//DB
+export async function sendDoc(text, username, uid) {
     if (!text) return;
     try {
         await addDoc(collection(db, 'messages'), {
         message: text,
         username: username,
+        uid: uid,
         createdAt: Timestamp.now()
         })
     } catch (err) {
@@ -58,10 +66,25 @@ export function getMessages(setMessages) {
     const msgsRef = collection(db, 'messages')
     const order = orderBy('createdAt')
     const q = query(msgsRef, order)
+    console.log("🚀 ~ file: FirebaseConfig.js ~ line 70 ~ getMessages ~ q", q)
     onSnapshot(q, (snap) => {
         setMessages(snap.docs.map((doc) => ({
             id: doc.id,
             data: doc.data()
         })))
+    })
+}
+
+export async function createUser(uid) {
+    const userRef = doc(db, "users", uid);
+    const userDoc = await getDoc(userRef);
+    if (userDoc) return;
+
+    const query = collection(db, "users");
+
+
+    const newUserDoc = doc(db, "users", uid);
+    await setDoc(newUserDoc, {
+        username: "New User "
     })
 }
