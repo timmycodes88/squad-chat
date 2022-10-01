@@ -75,13 +75,31 @@ export function getMessages(setMessages) {
 }
 
 export async function createUser(uid) {
+    
+}
+
+//This callback takes in a userProfileObject
+export async function getUser(uid, callback) {
+
+    //Create User
     const userRef = doc(db, "users", uid);
     const userDoc = await getDoc(userRef);
-    if (userDoc.exists()) return
+    if (userDoc.exists()) {
+        callback(userDoc.data())
+        return
+    }
     const randomNumber = Math.floor(100000 + Math.random() * 900000);
     const newUsername = "New User " + randomNumber;
     const newUserDoc = doc(db, "users", uid);
-    await setDoc(newUserDoc, {
+    const newUserData = {
         username: newUsername
-    })
+    }
+    await setDoc(newUserDoc, newUserData)
+    callback(newUserData)
+}
+
+export async function updateUserProfile(uid, username) {
+    if (!username) return;
+    const userRef = doc(db, "users", uid);
+    await setDoc(userRef, {username: username}, {merge: true})
 }
