@@ -41,11 +41,11 @@ export function signOut() {
     auth.signOut();
 }
 
-export async function sendDoc(text) {
+export async function sendDoc(text, username) {
     try {
         await addDoc(collection(db, 'messages'), {
         message: text,
-        username: "Tim Van",
+        username: username,
         createdAt: Timestamp.now()
         })
     } catch (err) {
