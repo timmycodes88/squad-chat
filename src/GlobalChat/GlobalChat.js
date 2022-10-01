@@ -41,7 +41,7 @@ export default function GlobalChat() {
 
             <TypingContainer>
                 <MessageBar placeholder='Message...' value={text} onChange={(e) => setText(e.target.value)} />
-                <SendButton onClick={() => sendDoc(text, user.displayName)}><StyledSendIcon /></SendButton>
+                <SendButton onClick={() => { sendDoc(text, user.displayName); setText(''); }}><StyledSendIcon /></SendButton>
             </TypingContainer>
 
         </Wrapper>

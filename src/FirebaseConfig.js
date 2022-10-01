@@ -42,6 +42,7 @@ export function signOut() {
 }
 
 export async function sendDoc(text, username) {
+    if (!text) return;
     try {
         await addDoc(collection(db, 'messages'), {
         message: text,
