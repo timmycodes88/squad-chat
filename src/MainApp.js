@@ -8,7 +8,7 @@ export default function MainApp({user}) {
 
     useEffect(() => {
         createUser(user.uid)
-    }, []);
+    }, [user.uid]);
 
     let photoURL;
     if (user.photoURL) photoURL = user.photoURL;
