@@ -1,22 +1,43 @@
 import tw, { styled } from "twin.macro";
-import { signInWithGoogle, signInOrCreate } from './FirebaseConfig'
+import { signInWithGoogle, signInOrCreate } from '../FirebaseConfig'
 import "firebase/compat/auth";
-import bgImage from "./Images/sign-in-bg.png";
+import bgImage from "../assets/Images/sign-in-bg.png";
 import { useState } from "react";
+
+function useUserAuth() {
+  
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
+
+  const getEmail = (e) => {
+    setEmail(e.target.value);
+  }
+
+  const getPassword = (e) => {
+    setPass(e.target.value);
+  }
+
+
+  return {
+    email,
+    pass,
+    getEmail,
+    getPassword
+  }
+}
 
 export default function SignIn() {
 
   const [signIn, setSignIn] = useState(true);
-  const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
+  const { email, pass, getEmail, getPassword } = useUserAuth();
 
   return (
     <FullBackground>
       <Modal>
         <Title>Squad Chat</Title>
         <form>
-          <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-          <Input type="password" value={pass} onChange={(e) => setPass(e.target.value)} placeholder="Password" />
+          <Input type="email" value={email} onChange={getEmail} placeholder="Email" />
+          <Input type="password" value={pass} onChange={getPassword} placeholder="Password" />
         </form>
         <SignInWithEmail onClick={() => signInOrCreate(signIn, email, pass)}>
           {signIn ? "Sign In with Email" : "Create Account"}
