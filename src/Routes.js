@@ -1,2 +1,2 @@
-export const profile = "/profile";
-export const globalChat = "/global-chat";
+export const PROFILE = "/profile";
+export const GLOBAL_CHAT = "/global-chat";

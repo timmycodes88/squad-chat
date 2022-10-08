@@ -1,8 +1,10 @@
 import tw from "twin.macro";
 import { useState } from "react";
-import { updateUserProfile } from "../FirebaseConfig";
+import { updateUserProfile, auth } from "../FirebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function EditableProfile({}) {
+  const [user] = useAuthState(auth)
   const [newUsername, setNewUsername] = useState("");
 
   return (

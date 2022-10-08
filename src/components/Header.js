@@ -1,28 +1,36 @@
 import tw from "twin.macro";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { signOut, getUser, auth } from "../FirebaseConfig";
 import defaultUser from "../assets/Images/default-user.png";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { profile } from "../Routes";
+import { PROFILE } from "../Routes";
+import { UserContext } from "../context/UserContext";
+import { SET_PROFILE } from "../context/CONSTANTS";
 
 export default function Header({ goTo }) {
   const [user] = useAuthState(auth);
-  const [userProfile, setUserProfile] = useState({});
+  
+  const { profile, dispatch } = useContext(UserContext)
+
+  
 
   useEffect(() => {
-    getUser(user.uid, setUserProfile);
+    getUser(user.uid).then(res => {
+      dispatch({ type: SET_PROFILE, payload: res})
+    });
   }, [user.uid]);
 
   let photoURL;
   if (user.photoURL) photoURL = user.photoURL;
   else photoURL = defaultUser;
 
+
   return (
     <Head>
-      <PersonBox onClick={() => goTo(profile)}>
+      <PersonBox onClick={() => goTo(PROFILE)}>
         <StyledImg src={photoURL} />
         <DisplayName>
-          {userProfile.username && userProfile.username}
+          {profile?.username}
         </DisplayName>
       </PersonBox>
 
@@ -35,7 +43,7 @@ export default function Header({ goTo }) {
 
 //Head
 const Head = tw.div`flex justify-center border-b h-24 bg-blue-700`;
-const PersonBox = tw.div`flex absolute top-4 left-4 items-center`;
+const PersonBox = tw.div`flex absolute top-4 left-4 items-center cursor-pointer`;
 const Title = tw.h1`text-white text-5xl pt-4`;
 const StyledImg = tw.img`w-16 h-16 rounded-full mr-4`;
 const DisplayName = tw.h2`text-lg text-white`;

@@ -1,34 +1,35 @@
 import tw from "twin.macro";
-import { useState } from "react";
 import GlobalChat from "../components/GlobalChat";
 import Header from "../components/Header";
 import EditableProfile from "../components/EditableProfile";
-import useViews from "../hooks/useViews";
-import { profile, globalChat } from "../Routes";
+import { useViews } from "hooks";
+import { PROFILE, GLOBAL_CHAT } from "../Routes";
+import UserState from "../context/UserState";
+
 
 export default function MainApp() {
   const Views = [
     {
       element: <GlobalChat />,
-      link: globalChat,
+      link: GLOBAL_CHAT,
     },
     {
       element: <EditableProfile />,
-      link: profile,
+      link: PROFILE,
     },
   ];
   const { view, goTo } = useViews(Views);
 
   return (
-    <>
+    <UserState>
       <Header goTo={goTo} />
       <Body>
-        <button onClick={() => goTo(globalChat)}>Global Chat</button>
+        <button onClick={() => goTo(GLOBAL_CHAT)}>Global Chat</button>
         {/* ROUTES */}
         {view}
         {/* END ROUTES */}
       </Body>
-    </>
+    </UserState>
   );
 }
 

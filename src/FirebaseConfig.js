@@ -10,7 +10,8 @@ orderBy,
 onSnapshot,
 doc,
 getDoc,
-setDoc
+setDoc,
+limit
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -34,7 +35,7 @@ export function signInWithGoogle() {
     signInWithPopup(auth, provider);
 }
 
-export function signInOrCreate(signIn, email, password) {
+export function signInOrCreateWithEmail(signIn, email, password) {
     if (signIn) {
         signInWithEmailAndPassword (auth, email, password)
     } else {
@@ -64,10 +65,11 @@ export async function sendDoc(text, username, uid) {
 
 export function getMessages(setMessages) {
     const msgsRef = collection(db, 'messages')
-    const order = orderBy('createdAt')
-    const q = query(msgsRef, order)
+    const order = orderBy('createdAt', 'desc')
+    const max = limit(25);
+    const q = query(msgsRef, order, max)
     onSnapshot(q, (snap) => {
-        setMessages(snap.docs.map((doc) => ({
+        setMessages(snap.docs.reverse().map((doc) => ({
             id: doc.id,
             data: doc.data()
         })))
@@ -79,14 +81,13 @@ export async function createUser(uid) {
 }
 
 //This callback takes in a userProfileObject
-export async function getUser(uid, callback) {
+export async function getUser(uid) {
 
     //Create User
     const userRef = doc(db, "users", uid);
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
-        callback(userDoc.data())
-        return
+        return userDoc.data()
     }
     const randomNumber = Math.floor(100000 + Math.random() * 900000);
     const newUsername = "New User " + randomNumber;
@@ -95,7 +96,7 @@ export async function getUser(uid, callback) {
         username: newUsername
     }
     await setDoc(newUserDoc, newUserData)
-    callback(newUserData)
+    return newUserData
 }
 
 export async function updateUserProfile(uid, username) {

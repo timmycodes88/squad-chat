@@ -1,35 +1,11 @@
 import tw, { styled } from "twin.macro";
-import { signInWithGoogle, signInOrCreate } from '../FirebaseConfig'
-import "firebase/compat/auth";
 import bgImage from "../assets/Images/sign-in-bg.png";
 import { useState } from "react";
-
-function useUserAuth() {
-  
-  const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
-
-  const getEmail = (e) => {
-    setEmail(e.target.value);
-  }
-
-  const getPassword = (e) => {
-    setPass(e.target.value);
-  }
-
-
-  return {
-    email,
-    pass,
-    getEmail,
-    getPassword
-  }
-}
+import { useSignIn } from "hooks";
 
 export default function SignIn() {
 
-  const [signIn, setSignIn] = useState(true);
-  const { email, pass, getEmail, getPassword } = useUserAuth();
+  const { email, pass, mode, getEmail, getPassword, toggleMode, signInOrCreate, signInWithGoogle } = useSignIn();
 
   return (
     <FullBackground>
@@ -39,14 +15,14 @@ export default function SignIn() {
           <Input type="email" value={email} onChange={getEmail} placeholder="Email" />
           <Input type="password" value={pass} onChange={getPassword} placeholder="Password" />
         </form>
-        <SignInWithEmail onClick={() => signInOrCreate(signIn, email, pass)}>
-          {signIn ? "Sign In with Email" : "Create Account"}
+        <SignInWithEmail onClick={signInOrCreate}>
+          {mode ? "Sign In with Email" : "Create Account"}
         </SignInWithEmail>
         <GoogleSignIn onClick={signInWithGoogle}>
           Sign in with Google
         </GoogleSignIn>
-        <CreateAcct onClick={() => setSignIn(!signIn)}>
-          {signIn ? "Create Account" : "Sign In with Email"}{" "}
+        <CreateAcct onClick={toggleMode}>
+          {mode ? "Create Account" : "Sign In with Email"}{" "}
         </CreateAcct>
       </Modal>
     </FullBackground>
