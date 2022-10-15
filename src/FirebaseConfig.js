@@ -86,12 +86,13 @@ export async function createUser(uid) {
 //This callback takes in a userProfileObject
 export async function getUser(uid) {
 
-    //Create User
+    //Get User
     const userRef = doc(db, "users", uid);
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
         return userDoc.data()
     }
+    //Create User
     const randomNumber = Math.floor(100000 + Math.random() * 900000);
     const newUsername = "New User " + randomNumber;
     const newUserDoc = doc(db, "users", uid);

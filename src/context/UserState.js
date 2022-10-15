@@ -3,7 +3,8 @@ import { UserContext } from './UserContext'
 import { userReducer } from './userReducer'
 
 const initialState = {
-    profile: {}
+    profile: {},
+    groups: []
 }
 
 export default function UserState({ children }) {

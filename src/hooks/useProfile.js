@@ -5,16 +5,15 @@ import { getUser } from "../FirebaseConfig";
 
 export default function useProfile(uid) {
   const { profile, dispatch } = useContext(UserContext)
-  const [resetProfile, setResetProfile] = useState(false)
 
     useEffect(() => {
+        fetchProfile()
+    }, [uid])
+
+    function fetchProfile() {
         getUser(uid).then(res => {
             dispatch({ type: SET_PROFILE, payload: res})
         })
-    }, [uid, resetProfile])
-
-    function fetchProfile() {
-        setResetProfile((current) => !current)
     }
 
     return { profile, fetchProfile }
