@@ -6,19 +6,12 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { PROFILE } from "../Routes";
 import { UserContext } from "../context/UserContext";
 import { SET_PROFILE } from "../context/CONSTANTS";
+import useProfile from "../hooks/useProfile";
 
 export default function Header({ goTo }) {
   const [user] = useAuthState(auth);
   
-  const { profile, dispatch } = useContext(UserContext)
-
-  
-
-  useEffect(() => {
-    getUser(user.uid).then(res => {
-      dispatch({ type: SET_PROFILE, payload: res})
-    });
-  }, [user.uid]);
+  const { profile } = useProfile(user.uid)
 
   let photoURL;
   if (user.photoURL) photoURL = user.photoURL;

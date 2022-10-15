@@ -13,6 +13,9 @@ getDoc,
 setDoc,
 limit
 } from "firebase/firestore";
+import { useContext } from 'react';
+import { UserContext } from './context/UserContext';
+import { SET_PROFILE } from './context/CONSTANTS';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -100,7 +103,9 @@ export async function getUser(uid) {
 }
 
 export async function updateUserProfile(uid, username) {
+
     if (!username) return;
     const userRef = doc(db, "users", uid);
     await setDoc(userRef, {username: username}, {merge: true})
+
 }
